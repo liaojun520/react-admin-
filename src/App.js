@@ -1,12 +1,32 @@
+import React,{ lazy,Suspense} from 'react'
 import { Button } from 'antd';
+import {BrowserRouter,Route, Switch, Redirect} from "react-router-dom"
+
+import Layout from './layout';
+import Loading from './components/loading'
+ 
 
 
-function App() {
+function AppContent() {
+  // BrowserRouter history模式  HashRouter //hash模式
   return (
-    <div className="App">
-       <Button>app113331</Button>
-    </div>
+    <BrowserRouter>  
+      <div className="App">
+        <Switch>
+           <Layout/>
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
+}
+
+
+function App(){
+  return( 
+    <Suspense fallback={<Loading/>}>
+        <AppContent/>
+    </Suspense>
+  )
 }
 
 export default App;

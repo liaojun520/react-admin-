@@ -1,0 +1,68 @@
+#components-layout-demo-side .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+.logo{
+  width:100%;
+  height:60px;
+  line-height: 60px;
+  overflow: hidden;
+  >img{
+    width:60px;
+    height:60px;
+    animation: sidebar-logo-spin infinite 10s linear;
+  }
+  >span{
+    color: #fff;
+    font-size: 20px;
+    vertical-align: middle;
+  }
+}
+@keyframes sidebar-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.main_right{
+  display: block;
+  position: relative;
+  flex:1;
+  height:100vh;
+  overflow: hidden;
+  .tab_link{
+    display: inline-block;
+  }
+
+  .header{
+    background: #fff!important;
+    border-bottom:1px solid #e6e6e6;
+    height:50px;
+  }
+  .main_box{
+    width:100%;
+    height:calc(100vh - 50px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+  }
+  .content{
+    margin: 0 0 0 16px;
+    background-color: #fff;
+    min-height:calc(100vh - 166px);
+    >div{
+      padding:20px;
+    }
+  }
+}
+
+.menu_item{
+  padding-left: 48px!important;
+}
