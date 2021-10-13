@@ -1,45 +1,32 @@
-import React, { lazy } from 'react'
 
-/**
- * lazy声明必须写在全部import声明方式的下方
- */
+import { lazy} from "react"
 
-//独立页
-const Longin = lazy(() => import('@/views/Login'))
 
-//公共页面
-const Layout = lazy(() => import('@/layout'))
-const Test = lazy(() => import('@/views/test'))
-
-//路由格式自己怎么方便怎么来...
-//本项目采用类似vue-router路由格式配置
-
+//静态路由菜单
 export const staticRoute = [
   {
-    path:"/login",
-    component:Longin,
-    hidden:true,
-    meta:{
-      title:"登录"
-    }
+    path: "/home",
+    component: "test",
+    meta: {
+      title: '首页'
+    },
   },
   {
     path: "/test1",
-    component: Layout,
     meta: {
       title: '测试1'
     },
     children: [
       {
-        path: "index1",
-        component: Test,
+        path: "/test1/index1",
+        component: "test",
         meta: {
           title: "测试2"
         },
         children:[
           {
-            path: "index3",
-            component: Test,
+            path: "/test1/index1/index3",
+            component: "test",
             meta: {
               title: "三级路由"
             },
@@ -48,8 +35,8 @@ export const staticRoute = [
         ]
       },
       {
-        path: "index4",
-        component: Test,
+        path: "/test1/index4",
+        component: "test",
         meta: {
           title: "测试4"
         },
@@ -58,19 +45,70 @@ export const staticRoute = [
   },
   {
     path: "/test2",
-    component: Layout,
     meta: {
       title: '测试2'
     },
     children: [
       {
-        path: "index2",
-        component: Test,
+        path: "/test2/index2",
+        component: "test",
         meta: {
           title: "测试2"
         }
       }
     ]
+  },
+  {
+    path: "/test3",
+    component: "test",
+    meta: {
+      title: '测试3',
+      icon:true
+    },
+  },
+  {
+    path:'/excel',
+    component:"Excel",
+    meta:{
+      title:"Excel",
+      icon:true
+    }
   }
 ]
+
+
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------
+*/
+
+//路由处理
+let router = []
+//菜单降维
+function getRoute( staticRoute = [],router){
+  staticRoute.forEach(item=>{
+    let obj = JSON.parse(JSON.stringify(item)) 
+    delete obj["children"]
+    if(obj.component!=="layout"){
+      router.push(obj)
+    }
+    if(item.children){
+      getRoute(item.children,router)
+    }
+  })
+}
+//菜单component处理
+function setRoute(router=[]){
+  router.forEach(item=>{
+    let filename = item.component
+    if(filename){
+      item.component = lazy(() => import(`@/views/${filename}`));
+    }
+  })
+  return router
+}
+getRoute(staticRoute,router)
+setRoute(router)
+
+export default router
 

@@ -175,7 +175,7 @@ module.exports = function (webpackEnv) {
             sourceMap: true,
             javascriptEnabled: true,
             modifyVars: {
-              'primary-color': '#ff4757', 'link-color': '#ff4757', 'border-radius-base': '2px',
+              'primary-color': '#1DA57A', 'link-color': '#1DA57A', 'border-radius-base': '2px',
             }
           }
         }

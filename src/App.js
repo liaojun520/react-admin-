@@ -1,32 +1,48 @@
-import React,{ lazy,Suspense} from 'react'
-import { Button } from 'antd';
-import {BrowserRouter,Route, Switch, Redirect} from "react-router-dom"
+import React, { lazy, Suspense } from 'react'
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
+import { ConfigProvider } from "antd";
+import 'moment/locale/zh-cn';
+import zhCN from "antd/es/locale/zh_CN";  //antd组件汉化
+import {connect} from "react-redux"
+import Loading from "@/components/loading"
+import Layout from "@/views/layout"
 
-import Layout from './layout';
-import Loading from './components/loading'
- 
+const Login = lazy(() => import("@/views/Login"))
+const Error = lazy(() => import("@/components/error"))
 
-
-function AppContent() {
+function AppContent(props) {
   // BrowserRouter history模式  HashRouter //hash模式
+  const {token} = props;
   return (
-    <BrowserRouter>  
-      <div className="App">
+    <BrowserRouter>
+      <ConfigProvider locale={zhCN}>
         <Switch>
-           <Layout/>
+          <Route exact path="/login" component={Login} />
+          <Route path="/404" component={Error} />
+          <Route
+            path="/"
+            render={() => {
+              if (!token) {
+                return <Redirect to="/login" />;
+              } else {
+                return <Layout />
+              }
+            }}
+          />
         </Switch>
-      </div>
+      </ConfigProvider>
     </BrowserRouter>
   );
 }
 
-
-function App(){
-  return( 
-    <Suspense fallback={<Loading/>}>
-        <AppContent/>
+//react-redux把state属性转为props
+function App(props) {
+  const {token} = props
+  return (
+    <Suspense fallback={<Loading />}>
+      <AppContent token={token} />
     </Suspense>
   )
 }
 
-export default App;
+export default connect(state =>state.user)(App);
