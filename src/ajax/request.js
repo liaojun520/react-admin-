@@ -1,11 +1,20 @@
 import axios from 'axios' 
 import { message } from 'antd';
+import Store from "@/store"
+
+
+
+const state = Store.getState()
 const service = axios.create({
   baseURL:process.env.REACT_APP_BASE_API,
   timeout: 20000
 })
 service.interceptors.request.use(
   config => {
+    const token = state.user.token;
+    if(token){
+      config.headers['token'] = token 
+    }
     return config
   },
   error => {

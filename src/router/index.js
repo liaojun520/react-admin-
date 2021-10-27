@@ -8,7 +8,8 @@ export const staticRoute = [
     path: "/home",
     component: "test",
     meta: {
-      title: '首页'
+      title: '首页',
+      icon:true
     },
   },
   {
@@ -89,7 +90,7 @@ function getRoute( staticRoute = [],router){
   staticRoute.forEach(item=>{
     let obj = JSON.parse(JSON.stringify(item)) 
     delete obj["children"]
-    if(obj.component!=="layout"){
+    if(obj.component){
       router.push(obj)
     }
     if(item.children){

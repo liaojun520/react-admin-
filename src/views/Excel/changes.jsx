@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect} from 'react'
 import { Modal, Button, Form, Input} from 'antd';
 import { editItem } from "@/ajax/api"
 import { message } from 'antd';
@@ -13,7 +13,7 @@ function Changes(props) {
   })
   return (
         <Modal
-          getContainer={false} 
+          forceRender //防止Form组件还没加载
           title="修改" 
           visible={isShow} 
           onOk={handleOk} 
@@ -49,6 +49,11 @@ function Changes(props) {
             </Form.Item>
             
           </Form>
+          <div>
+            {info.author}
+            <br/>
+            {info.title}
+          </div>
         </Modal>
   )
   function handleOk(){  //提交

@@ -24,16 +24,16 @@ class LayoutDom extends React.Component {
     return (
       <Layout style={{ height: '100vh' }}>
         {/* 左侧菜单 */}
-        <SiderBar Sider={Sider} Menu={Menu} collapsed={collapsed} onCollapse={this.onCollapse}/>
+        <SiderBar Sider={Sider} Menu={Menu} collapsed={collapsed}  onCollapse={this.onCollapse}/>
         <div className="main_right">
           {/* 头部 */}
           <Headers Header={Header}/>
           <div className="main_box">
             {/* 导航 */}
-            <Nav Breadcrumb={Breadcrumb}/>
+            {/* <Nav Breadcrumb={Breadcrumb}/> */}
             {/* 主题内容 */}
             <Contents Content={Content}/>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+            {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
           </div>
         </div>
       </Layout>

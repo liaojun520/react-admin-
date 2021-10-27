@@ -37,7 +37,7 @@ export default {
     return {
       code: 0,
       data: {
-        total: List.length,
+        total: value.title ? pageList.length : mockList.length,
         list: pageList,
         value
       },

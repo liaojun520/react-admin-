@@ -16,11 +16,8 @@ const SiderBar = (props) => {
     setMenuTreeNode(menu)
   }, [])
   useEffect(() => {
-    console.log(openKey, "openKey")
+    console.error(openKey, "openKey")
   },[openKey])
-  useEffect(() => {
-    console.error("重新渲染")
-  })
 
   // 递归遍历菜单
   function menuTabs(list) {
@@ -40,8 +37,8 @@ const SiderBar = (props) => {
             );
             if (!flag && item.path) {
               setOpenKey(val => {
-                console.warn("执行了", [...val, item.path])
-                return [...val, item.path]
+                val.push(item.path)
+                return val
               })
             }
           }
@@ -102,9 +99,6 @@ const SiderBar = (props) => {
   function handleMenuSelect(e) {
     const key = Array.of(e.key)
     setSelectedKey(key)
-    setOpenKey(val => {
-      return [...val, key]
-    })
   }
 
 

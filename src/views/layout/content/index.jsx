@@ -14,7 +14,7 @@ const Contents = (props) => {
           {
             router.map(item => <Route key={item.path} path={item.path} component={item.component} />)
           }
-          {/* <Redirect to="/404" /> */}
+          <Redirect to="/404" />
         </Switch>
       </div>
     </Content>

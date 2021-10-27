@@ -83,7 +83,8 @@ class Login extends React.Component{
       </div>
     )
   }
-  componentDidMount(){
+  componentWillUnmount(){
+    clearTimeout(this.timer)
   }
   //用户名回车键回调
   onPressUser = () => {  
@@ -106,11 +107,13 @@ class Login extends React.Component{
       const data = this.formRef.current.getFieldValue()
       userLogin(data).then(r=>{
         if(r.code===0){
-           setTimeout(()=>{
-             if(r.data.token)
-              _this.props.setUserToken(r.data.token)
-              _this.setState({loading:false})
-              _this.props.history.push('/home')
+           _this.timer = setTimeout(()=>{
+             if(r.data.token){
+              const {token} = _this.props.setUserToken(r.data.token)
+              _this.setState({loading:false},()=>{
+                _this.props.history.push('/home')
+              })
+             }
            },1000)
         }
       })
@@ -125,3 +128,7 @@ class Login extends React.Component{
 
 export default connect(state => state.user,{setUserToken})(Login)
 
+/**
+ * connect作用：把state,dispatch函数转为 当前组件的props上 
+ * dispatch 分同步和异步
+ */
