@@ -6,7 +6,7 @@ import { lazy} from "react"
 export const staticRoute = [
   {
     path: "/home",
-    component: "test",
+    component: "home/index.jsx",
     meta: {
       title: '首页',
       icon:true

@@ -595,6 +595,32 @@ module.exports = function (webpackEnv) {
                 'less-loader'
               ),
             },
+            // svg-loader配置    https://www.jianshu.com/p/8e930cb71433
+            {
+              test: /\.(eot|woff2?|ttf|svg)$/,
+              exclude: path.resolve(__dirname, "../src/icons/svg"), //不处理指定svg的文件(所有使用的svg文件放到该文件夹下)
+              use: [
+                {
+                  loader: "url-loader",
+                  options: {
+                    name: "[name]-[hash:5].min.[ext]",
+                    limit: 5000, // fonts file size <= 5KB, use 'base64'; else, output svg file
+                    outputPath: "font",
+                    publicPath: "font"
+                  }
+                }
+              ]
+            },
+
+            {
+              test: /\.svg$/,
+              loader: "svg-sprite-loader",
+              include: path.resolve(__dirname, "../src/icons/svg"), //只处理指定svg的文件(所有使用的svg文件放到该文件夹下)
+              options: {
+                symbolId: "icon-[name]" //symbolId和use使用的名称对应      <use xlinkHref={"#icon-" + iconClass} />
+
+              }
+            },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
             // In production, they would get copied to the `build` folder.
@@ -610,7 +636,8 @@ module.exports = function (webpackEnv) {
               options: {
                 name: 'static/media/[name].[hash:8].[ext]',
               },
-            },
+            }
+            // 所有loader配置项必须放到file-loader的前面！！！
             // ** STOP ** Are you adding a new loader?
             // Make sure to add the new loader(s) before the "file" loader.
           ],

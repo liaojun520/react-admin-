@@ -1,7 +1,9 @@
 //user
 export const USER_SET_USER_TOKEN = "USER_SET_USER_TOKEN";
-export const USER_SET_USER_INFO = "USER_SET_USER_INFO";
-export const USER_RESET_USER = "USER_RESET_USER";
+
+
+//settings
+export const COLLAPSED_SETTINGS = "COLLAPSED_SETTINGS";
 
 
 

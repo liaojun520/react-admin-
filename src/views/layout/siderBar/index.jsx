@@ -16,7 +16,7 @@ const SiderBar = (props) => {
     setMenuTreeNode(menu)
   }, [])
   useEffect(() => {
-    console.error(openKey, "openKey")
+    // console.error(openKey, "openKey")
   },[openKey])
 
   // 递归遍历菜单

@@ -25,7 +25,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (res.type == "multipart/form-data") { 
+    if (res.type === "multipart/form-data") { 
       return response
     }else if (res.code !== 0 && res.code !=='-1') {
       if (res.code === 1010) {  //登录失效特有的code

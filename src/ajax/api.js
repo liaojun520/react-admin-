@@ -1,4 +1,4 @@
-import qs from 'qs' // npm install qs
+// import qs from 'qs' // npm install qs
 import request from './request'
 
 // //登录失效测试接口  /user/check_login

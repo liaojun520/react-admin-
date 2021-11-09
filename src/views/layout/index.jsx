@@ -5,26 +5,22 @@ import Headers from "./header"
 import Nav from "./nav"
 import Contents from "./content"
 import { Layout, Menu, Breadcrumb } from 'antd';
+import {connect} from "react-redux"
+
+
+
 const { Header, Content, Footer, Sider } = Layout;
 
 
 
 
 class LayoutDom extends React.Component {
-  state = {
-    collapsed: false,
-  };
-
-  onCollapse = collapsed => {
-    this.setState({ collapsed });
-  };
-
   render() {
-    const { collapsed } = this.state;
+    const { collapsed } = this.props;
     return (
       <Layout style={{ height: '100vh' }}>
         {/* 左侧菜单 */}
-        <SiderBar Sider={Sider} Menu={Menu} collapsed={collapsed}  onCollapse={this.onCollapse}/>
+        <SiderBar Sider={Sider} Menu={Menu} collapsed={collapsed}/>
         <div className="main_right">
           {/* 头部 */}
           <Headers Header={Header}/>
@@ -41,7 +37,7 @@ class LayoutDom extends React.Component {
   }
 }
 
-export default LayoutDom
+export default connect(state=>state.settings)(LayoutDom) 
 
 
 

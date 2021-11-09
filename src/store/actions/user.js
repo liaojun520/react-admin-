@@ -1,5 +1,4 @@
 import * as types from "../action-types";
-// import { reqUserInfo } from "@/api/user";
 
 export const setUserToken = (token) => {
   return {
