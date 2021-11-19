@@ -8,16 +8,16 @@ class Home extends React.Component {
   render() {
     let {content} = this.state
     return (
-      <div>
+      <div style={{position:'relative',width:'100%'}}>
         <Editor
           value={content}
           callback={r=>this.updateEditorContent(r)}
           id={"#text"}
         />
-        <hr/>
+        {/* <hr/>
         <div>内容：{content}</div>
         <hr/>
-        <div dangerouslySetInnerHTML={{__html:content}}></div>
+        <div dangerouslySetInnerHTML={{__html:content}}></div> */}
       </div>
     )
   }

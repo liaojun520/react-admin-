@@ -13,6 +13,7 @@ class Login extends React.Component{
   userRef = React.createRef()
   passRef = React.createRef()
   render(){
+    alert(1)
     const { loading } = this.state;
     return(
       <div className="login">
@@ -109,10 +110,13 @@ class Login extends React.Component{
         if(r.code===0){
            _this.timer = setTimeout(()=>{
              if(r.data.token){
-              const {token} = _this.props.setUserToken(r.data.token)
               _this.setState({loading:false},()=>{
-                _this.props.history.push('/home')
+                const {token} = _this.props.setUserToken(r.data.token) //同步dispatch操作
               })
+              /**不需要再执行history.push('/home') 操作，因为当redux含有token的时候，该login组件就销毁了，再操作setState会造成内存泄漏 */
+              // _this.setState({loading:false},()=>{
+              //   _this.props.history.push('/home')
+              // })
              }
            },1000)
         }

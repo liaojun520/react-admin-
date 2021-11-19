@@ -26,7 +26,7 @@ export default class Editor extends React.Component {
                 enableAutoSave: false,
                 // eslint-disable-next-line no-dupe-keys
                 autoHeightEnabled: false,
-                initialFrameHeight: this.props.height ? this.props.height : "200px",
+                initialFrameHeight: this.props.height ? this.props.height : "400px",
                 initialFrameWidth: '100%',
             }); 
             this.setState({ueEditor})
@@ -50,11 +50,12 @@ export default class Editor extends React.Component {
         const { id } = this.props;
         const styles = {
             width:"100%",
-            height: this.props.height ? this.props.height : "200px" 
+            height: this.props.height ? this.props.height : "400px" 
         }
         return (
         <div>
-            <textarea id={id} style={styles}></textarea>
+            <script type="text/plain" id={id} style={styles}></script>
+            {/* <textarea id={id} style={styles}></textarea> */}
         </div>
         )
     }
