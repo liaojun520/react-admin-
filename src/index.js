@@ -6,6 +6,7 @@ import "./mock";
 import store from "./store" //给全局提供Store
 import {Provider} from 'react-redux'
 import './icons'  //引入icons
+import 'default-passive-events'
 
 ReactDOM.render(
   <Provider store={store}>

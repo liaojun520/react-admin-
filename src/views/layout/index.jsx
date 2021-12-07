@@ -2,21 +2,15 @@ import React from "react"
 import "./style.less"
 import SiderBar from "./siderBar"
 import Headers from "./header"
-import Nav from "./nav"
+// import Nav from "./nav"
 import Contents from "./content"
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu} from 'antd';
 import {connect} from "react-redux"
-
-
-
-const { Header, Content, Footer, Sider } = Layout;
-
-
-
 
 class LayoutDom extends React.Component {
   render() {
     const { collapsed } = this.props;
+    const { Header, Content, Sider } = Layout;
     return (
       <Layout style={{ height: '100vh' }}>
         {/* 左侧菜单 */}

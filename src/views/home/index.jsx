@@ -14,10 +14,7 @@ class Home extends React.Component {
           callback={r=>this.updateEditorContent(r)}
           id={"#text"}
         />
-        {/* <hr/>
-        <div>内容：{content}</div>
-        <hr/>
-        <div dangerouslySetInnerHTML={{__html:content}}></div> */}
+        <div dangerouslySetInnerHTML={{__html:content}}></div>
       </div>
     )
   }

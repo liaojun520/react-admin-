@@ -27,7 +27,7 @@ const users = {
     description:"仅能看到Dashboard、开发文档、权限测试和关于作者四个页面",
   },
 };
-
+// eslint-disable-next-line
 export default {
   //登录
   login: (config) => {
@@ -118,6 +118,7 @@ export default {
       status: 0,
     };
   },
+  // eslint-disable-next-line
   logout: (_) => {
     return {
       status: 0,

@@ -11,7 +11,7 @@ const { RangePicker } = DatePicker;
 const ExcelDom = () => {
 const H = document.body.clientHeight - 200 
 const [table, setTableList] = useState(() => []) //列表
-const [total,setTotal] = useState(1)
+const [total,setTotal] = useState(0)
 const [params, setParams] = useState( function getInitialState() {
   return { pageNum: 1, pageSize: 10 }
 }) //初始入参
@@ -19,8 +19,14 @@ const [isShow,setIsShow] = useState(false) //修改弹框
 const [info,setInfo] = useState(()=>({})) //修改对象
   
 useEffect(() => {
-  GetTableList()  //初始化 
-}, [])
+  //初始化
+  tableList({pageNum: 1, pageSize: 10}).then(res => {
+    if (res.code === 0) {
+      setTableList([...res.data.list])
+      setTotal(res.data.total)
+    }
+  })
+},[])
 
 const columns = [
   {

@@ -1,5 +1,5 @@
 import React from "react"
-import "./index.less"
+import "./style.less"
 import { Form, Input, Button, message, Spin } from "antd";
 import { LockOutlined, UserOutlined} from '@ant-design/icons';
 import {userLogin} from "@/ajax/api"
@@ -13,7 +13,6 @@ class Login extends React.Component{
   userRef = React.createRef()
   passRef = React.createRef()
   render(){
-    alert(1)
     const { loading } = this.state;
     return(
       <div className="login">
@@ -112,6 +111,7 @@ class Login extends React.Component{
              if(r.data.token){
               _this.setState({loading:false},()=>{
                 const {token} = _this.props.setUserToken(r.data.token) //同步dispatch操作
+                console.log(token)
               })
               /**不需要再执行history.push('/home') 操作，因为当redux含有token的时候，该login组件就销毁了，再操作setState会造成内存泄漏 */
               // _this.setState({loading:false},()=>{

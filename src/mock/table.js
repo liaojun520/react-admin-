@@ -16,11 +16,11 @@ for (let i = 0; i < count; i++) {
     })
   );
 }
+// eslint-disable-next-line
 export default {
   //查询
   tableList: (config) => {  //参数有{pageNum,pageSize,title}
      let value = JSON.parse(config.body)
-     console.error(value)
      let start = 0,end = List.length,mockList = JSON.parse(JSON.stringify(List));
      if(value.title && value.title!==""){
         mockList = List.filter((item) => {

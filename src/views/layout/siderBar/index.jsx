@@ -14,10 +14,7 @@ const SiderBar = (props) => {
   useEffect(() => {
     const menu = menuTabs(staticRoute)
     setMenuTreeNode(menu)
-  }, [])
-  useEffect(() => {
-    // console.error(openKey, "openKey")
-  },[openKey])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // 递归遍历菜单
   function menuTabs(list) {

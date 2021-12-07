@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import { Modal, Button, Form, Input} from 'antd';
 import { editItem } from "@/ajax/api"
 import { message } from 'antd';

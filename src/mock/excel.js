@@ -12,11 +12,10 @@ for (let i = 0; i < count; i++) {
     date: '@datetime'
   }))
 }
-export default {
-  excelList: (_) => {
-    return {
-      code: 20000,
-      data: { items: list }
-    }
-  },
+const obj = {
+  excelList:{
+    code: 20000,
+    data: { items: list }
+  }
 };
+export default obj
