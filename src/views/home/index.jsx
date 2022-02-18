@@ -1,26 +1,26 @@
-import React from 'react'
-import Editor from '@/components/editor'
+import React from "react";
+import Editor from "@/components/editor";
 
 class Home extends React.Component {
   state = {
-    content: '',
-  }
+    content: "",
+  };
   render() {
-    let {content} = this.state
+    let { content } = this.state;
     return (
-      <div style={{position:'relative',width:'100%'}}>
+      <div style={{ position: "relative", width: "100%" }}>
         <Editor
           value={content}
-          callback={r=>this.updateEditorContent(r)}
+          callback={(r) => this.updateEditorContent(r)}
           id={"#text"}
         />
-        <div dangerouslySetInnerHTML={{__html:content}}></div>
+        <div dangerouslySetInnerHTML={{ __html: content }}></div>
       </div>
-    )
+    );
   }
-  updateEditorContent = (content) =>{
-    this.setState({ content })
+  updateEditorContent(content) {
+    this.setState({ content });
   }
 }
 
-export default Home
+export default Home;

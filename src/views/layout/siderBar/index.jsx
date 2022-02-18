@@ -1,113 +1,130 @@
-import React, { useState, useEffect } from "react"
-import Logo from "../logo"
-import { staticRoute } from "@/router"
-import { UserOutlined } from '@ant-design/icons';
-import { Link, withRouter } from "react-router-dom"
+import React, { Component } from "react";
+import Logo from "../logo";
+import { staticRoute } from "@/router";
+import { UserOutlined } from "@ant-design/icons";
+import { Link, withRouter } from "react-router-dom";
 
-const SiderBar = (props) => {
-  const { Sider, Menu, collapsed, onCollapse } = props
-  const { SubMenu } = Menu;
-  const { pathname } = props.history.location
-  const [selectedKey, setSelectedKey] = useState(Array.of(pathname))  //初始选中菜单
-  const [openKey, setOpenKey] = useState([])  //张开菜单
-  const [menuTreeNode, setMenuTreeNode] = useState(() => [])
-  useEffect(() => {
-    const menu = menuTabs(staticRoute)
-    setMenuTreeNode(menu)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // 递归遍历菜单
-  function menuTabs(list) {
-    if (list.length > 0) {
-      return list.map(item => {
-        if (item.hidden) { //隐藏菜单
-          return null
-        } else if (item.children) {//多级菜单
-          let isHidden = isAllHidden(item.children, item)
-          if (isHidden) {
-            return null
-          }
-          //如果路由存在path字段,说明是要张开的菜单
-          if (pathname.indexOf(item.path) !== -1) {
-            const flag = openKey.find(
-              itm => itm === item.path
-            );
-            if (!flag && item.path) {
-              setOpenKey(val => {
-                val.push(item.path)
-                return val
-              })
-            }
-          }
-          return (
-            <SubMenu key={item.path} icon={<UserOutlined />} title={item.meta.title}>
-              {
-                menuTabs(item.children)
-              }
-            </SubMenu>
-          )
-        }
-        //单级菜单 注意：必须 Menu.Item包裹Link标签，不然会报错
-        return (
-          <Menu.Item key={item.path} icon={item.meta.icon && <UserOutlined />}>
-            <Link className="tab_link" to={item.path}>
-              {item.meta.title}
-            </Link>
-          </Menu.Item>
-        )
-      })
-    } else {
-      return null
+class SiderBar extends Component {
+  state = {
+    selectedKey: [], //选中菜单
+    openKey: [], //张开菜单
+    menuTreeNode: [], //路由菜单
+  };
+  render() {
+    const { Sider, Menu, collapsed, onCollapse } = this.props;
+    const { openKey, selectedKey, menuTreeNode } = this.state;
+    return (
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={() => onCollapse(!collapsed)}
+      >
+        <Logo collapsed={collapsed} />
+        {/*以路由地址为选中高亮 */}
+        {menuTreeNode.map((item) =>(
+          <Menu
+          key={item.key}
+          theme="dark"
+          mode="inline"
+          onSelect={(e) => this.handleMenuSelect(e)}
+          // 默认张开菜单
+          defaultOpenKeys={openKey}
+          // 选中菜单
+          selectedKeys={selectedKey}
+        >
+        {item}
+        </Menu>
+        ))}
+      </Sider>
+    );
+  }
+  componentDidMount() {
+    this.init_menu();
+  }
+  // 组件(包含父子组件 自身)每次rendering之前被调用
+  static getDerivedStateFromProps(nextProps, prevState) { 
+    const { pathname } = nextProps.history.location;
+    const { selectedKey } = prevState
+    const isInclude = selectedKey.find((item)=> item === pathname)
+    // 初始化选中菜单
+    if(!isInclude){ 
+      return ({...prevState,selectedKey:[...selectedKey,pathname]})
     }
+    return null
   }
-
-
-
-
-  return (
-    <Sider collapsible collapsed={collapsed} onCollapse={() => onCollapse(!collapsed)}>
-      <Logo collapsed={collapsed} />
-      <Menu
-        theme="dark"
-        mode="inline"
-        onSelect={(e) => handleMenuSelect(e)}
-        defaultOpenKeys={openKey} //默认张开菜单
-        selectedKeys={selectedKey} //选中菜单
-      > {/*以路由地址为选中高亮 */}
-        {
-          menuTreeNode.map(item => item)
-        }
-      </Menu>
-    </Sider>
-  )
-
-  //判断多级菜单的子菜单是否都为隐藏，如果是，则不展示多级菜单
-  function isAllHidden(children = []) {
-    let flag = true
-    children.forEach(item => {
+  // 路由菜单转为dom
+  init_menu() {
+    const menu = this.menuTabs(staticRoute);
+    this.setState({ menuTreeNode: [...menu] });
+  }
+  // 递归遍历菜单生成对应的dom
+  menuTabs(list = []) {
+    const { Menu } = this.props;
+    const { SubMenu } = Menu;
+    const { pathname } = this.props.history.location;
+    return list.reduce((pre, item) => {
+      // 如果没有隐藏才需要渲染
       if (!item.hidden) {
-        flag = false
+        // 判断如果没有children，直接push
+        if (!item.children) {
+          const dom = (
+            <Menu.Item
+              key={item.path}
+              icon={item.meta.icon && <UserOutlined />}
+            >
+              <Link className="tab_link" to={item.path}>
+                {item.meta.title}
+              </Link>
+            </Menu.Item>
+          );
+          pre.push(dom);
+        } else {
+          // 如果有children 首先考虑该多级菜单组的每个菜单是否都隐藏 是的话不用处理
+          let isAllHidden = this.isAllHidden(item.children, item);
+          if (!isAllHidden) {
+            // 再判断多级菜单初始化状态菜单是否需要张开
+            const flag = item.children.find(
+              (itm) => pathname.indexOf(itm.path) === 0
+            );
+            if (flag) {
+              this.setState((state) => {
+                return ({
+                  openKey: [...state.openKey, item.path],
+                })
+              });
+            }
+            // 再处理多级菜单
+            const dom = (
+              <SubMenu
+                key={item.path}
+                icon={<UserOutlined />}
+                title={item.meta.title}
+              >
+                {this.menuTabs(item.children)}
+              </SubMenu>
+            );
+            pre.push(dom);
+          }
+        }
       }
-    })
-    return flag
+      return pre;
+    }, []);
   }
-
-  //选中菜单 ==> 也是一个数组集合
-  function handleMenuSelect(e) {
-    const key = Array.of(e.key)
-    setSelectedKey(key)
+  // 判断多级菜单的子菜单是否都为隐藏，如果是，则不展示多级菜单
+  isAllHidden(children = []) {
+    let flag = true;
+    children.forEach((item) => {
+      if (!item.hidden) {
+        flag = false;
+      }
+    });
+    return flag;
   }
-
-
+  // 选中菜单 也是一个数组集合
+  handleMenuSelect(e) {
+    const key = Array.of(e.key);
+    this.setState({ selectedKey: [...key] });
+  }
 }
 
-
-export default withRouter(SiderBar)
-
-
-
-
-
-
-
-
+export default withRouter(SiderBar);

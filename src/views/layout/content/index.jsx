@@ -4,7 +4,6 @@ import router from "@/router"
 
 const Contents = (props) => {
   const { Content } = props
-
   return (
     <Content className="content">
       <div className="site-layout-background">

@@ -7,7 +7,6 @@ import { Redirect } from "react-router-dom"
 //登录了，登录页重定向到首页
 const LoginDom = (props) => {
   const {token,history} = props;
-  console.error(props)
   if(token){
     return  <Redirect to="/home" />
   }

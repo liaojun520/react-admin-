@@ -2,11 +2,10 @@ import axios from 'axios'
 import { message } from 'antd';
 import Store from "@/store"
 
-
-
+const base_url = window.location.origin + window.location.pathname
 const state = Store.getState()
 const service = axios.create({
-  baseURL:process.env.REACT_APP_BASE_API,
+  baseURL:process?.env?.REACT_APP_BASE_API || base_url,
   timeout: 20000
 })
 service.interceptors.request.use(

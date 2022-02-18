@@ -20,7 +20,7 @@ export const staticRoute = [
     children: [
       {
         path: "/test1/index1",
-        component: "test",
+        component: "test1",
         meta: {
           title: "测试2"
         },
@@ -69,9 +69,9 @@ export const staticRoute = [
   },
   {
     path:'/excel',
-    component:"Excel",
+    component:"excel",
     meta:{
-      title:"Excel",
+      title:"excel",
       icon:true
     }
   }
