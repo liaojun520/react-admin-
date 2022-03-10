@@ -10,45 +10,18 @@ class SiderBar extends Component {
     openKey: [], //张开菜单
     menuTreeNode: [], //路由菜单
   };
-  render() {
-    const { Sider, Menu, collapsed, onCollapse } = this.props;
-    const { openKey, selectedKey, menuTreeNode } = this.state;
-    return (
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={() => onCollapse(!collapsed)}
-      >
-        <Logo collapsed={collapsed} />
-        {/*以路由地址为选中高亮 */}
-        {menuTreeNode.map((item) =>(
-          <Menu
-          key={item.key}
-          theme="dark"
-          mode="inline"
-          onSelect={(e) => this.handleMenuSelect(e)}
-          // 默认张开菜单
-          defaultOpenKeys={openKey}
-          // 选中菜单
-          selectedKeys={selectedKey}
-        >
-        {item}
-        </Menu>
-        ))}
-      </Sider>
-    );
-  }
   componentDidMount() {
     this.init_menu();
   }
-  // 组件(包含父子组件 自身)每次rendering之前被调用
+  // 组件(包含父子组件 自身)每次rendering之前被调用 
+  // 当使用了withRouter时，每次路由跳转都会触发更新
   static getDerivedStateFromProps(nextProps, prevState) { 
     const { pathname } = nextProps.history.location;
     const { selectedKey } = prevState
     const isInclude = selectedKey.find((item)=> item === pathname)
-    // 初始化选中菜单
+    // 设置选中菜单 初始化 或者 每次路由跳转都会执行 getDerivedStateFromProps 
     if(!isInclude){ 
-      return ({...prevState,selectedKey:[...selectedKey,pathname]})
+      return ({...prevState,selectedKey:[pathname]})
     }
     return null
   }
@@ -73,8 +46,8 @@ class SiderBar extends Component {
               icon={item.meta.icon && <UserOutlined />}
             >
               <Link className="tab_link" to={item.path}>
-                {item.meta.title}
-              </Link>
+    {item.meta.title}
+  </Link>
             </Menu.Item>
           );
           pre.push(dom);
@@ -120,11 +93,35 @@ class SiderBar extends Component {
     });
     return flag;
   }
-  // 选中菜单 也是一个数组集合
-  handleMenuSelect(e) {
-    const key = Array.of(e.key);
-    this.setState({ selectedKey: [...key] });
+  render() {
+    const { Sider, Menu, collapsed, onCollapse } = this.props;
+    const { openKey, selectedKey, menuTreeNode } = this.state;
+    return (
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={() => onCollapse(!collapsed)}
+      >
+        <Logo collapsed={collapsed} />
+        {/*以路由地址为选中高亮 */}
+        {menuTreeNode.map((item) =>(
+          <Menu
+          key={item.key}
+          theme="dark"
+          mode="inline"
+          // 默认张开菜单
+          defaultOpenKeys={openKey}
+          // 选中菜单
+          selectedKeys={selectedKey}
+        >
+        {item}
+        </Menu>
+        ))}
+      </Sider>
+    );
   }
 }
 
 export default withRouter(SiderBar);
+
+

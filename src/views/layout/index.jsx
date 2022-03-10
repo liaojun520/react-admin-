@@ -9,7 +9,6 @@ import {connect} from "react-redux"
 
 class LayoutDom extends React.Component {
   render() {
-    console.log('render...')
     const { collapsed } = this.props;
     const { Header, Content, Sider } = Layout;
     return (

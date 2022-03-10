@@ -1,7 +1,8 @@
 import { setUserToken } from "./user";
-import { setCollapsed } from "./settings"
+import { setCollapsed,setChange } from "./settings"
 
 export {
   setUserToken,
-  setCollapsed
+  setCollapsed,
+  setChange
 };

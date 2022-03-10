@@ -1,20 +1,30 @@
 import * as types from "../action-types"
 
-//小于600 左侧菜单默认收缩
+
 const clientWidth = document.documentElement.clientWidth
-
-
 const initialState = {
   collapsed: clientWidth>600 ? false :true,
+  isChange:false
 }
 
+const {COLLAPSED_SETTINGS,CHANGE_SETTINGS} = types
+
 export default function settings(state = initialState,action){
+  const {collapsed,isChange} = action
    switch(action.type){
-     case types.COLLAPSED_SETTINGS:
-       return{
+      // 菜单张合
+      case COLLAPSED_SETTINGS:
+        return{
+            ...state,
+            collapsed
+        };
+      // 是否修改
+      case CHANGE_SETTINGS:
+        return {
           ...state,
-          collapsed:action.collapsed
-       };
-     default: return state;
+          isChange
+        }
+      default: return state;
    }
 }
+

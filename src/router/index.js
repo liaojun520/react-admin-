@@ -15,7 +15,7 @@ export const staticRoute = [
   {
     path: "/test1",
     meta: {
-      title: '测试1'
+      title: '多级菜单'
     },
     children: [
       {
@@ -61,9 +61,9 @@ export const staticRoute = [
   },
   {
     path: "/test3",
-    component: "test",
+    component: "confirm",
     meta: {
-      title: '测试3',
+      title: '路由跳转二次确认',
       icon:true
     },
   },
@@ -77,27 +77,21 @@ export const staticRoute = [
   }
 ]
 
-
-
-/*
----------------------------------------------------------------------------------------------------------------------------------
-*/
-
-//路由处理
-let router = []
 //菜单降维
-function getRoute( staticRoute = [],router){
-  staticRoute.forEach(item=>{
+function getRouter(staticRoute = [],ary = []){
+  staticRoute.forEach((item) => {
     let obj = JSON.parse(JSON.stringify(item)) 
     delete obj["children"]
     if(obj.component){
-      router.push(obj)
+      ary.push(obj)
     }
     if(item.children){
-      getRoute(item.children,router)
+      getRouter(item.children,ary)
     }
   })
+  return ary
 }
+
 //菜单component处理
 function setRoute(router=[]){
   router.forEach(item=>{
@@ -108,8 +102,8 @@ function setRoute(router=[]){
   })
   return router
 }
-getRoute(staticRoute,router)
-setRoute(router)
+let router = getRouter(staticRoute) 
+router = setRoute(router)
 
 export default router
 

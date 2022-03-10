@@ -19,7 +19,7 @@ class Excel extends Component {
     params: {
       pageNum: 1,
       pageSize: 10,
-      title:''
+      title:null
     },
     list: [],
     loading: false,
@@ -61,7 +61,6 @@ class Excel extends Component {
         title: "操作",
         dataIndex: "do",
         key: "do",
-        width: 200,
         align: "center",
         render: (text, record) => (
           <Space size="small">
@@ -79,9 +78,10 @@ class Excel extends Component {
         ),
       },
     ];
-    const { list, info, total,params } = this.state;
+    const { list, info, total,params,loading} = this.state;
     return (
       <div>
+        {/* 头部 */}
         <div className="search">
           <Space direction="vertical" size={12}>
             <Input
@@ -114,17 +114,32 @@ class Excel extends Component {
           dataSource={list}
           columns={columns}
           rowKey={(record) => record.id}
-          pagination={false}
           scroll={{ y: H }}
+          loading = {loading}
+          pagination={
+            // {
+            //  current: params.pageNum,
+            //  pageSize: params.pageSize,
+            //  total
+            // }
+            false //不采用表格组件自带的分页
+          } 
+          // onChange={this.handleTableChange}
         />
+        {/* 分页 */}
         <Pagination
-          showQuickJumper
-          defaultCurrent={2}
-          defaultPageSize={20}
           total={total}
-          onChange={this.onPagination}
+          pageSizeOptions={["10", "20", "40","50"]}
+          showTotal={(total) => `共${total}条数据`}
+          onChange={this.changePage}
+          current={params.pageNum}
+          onShowSizeChange={this.changePageSize}
+          showSizeChanger
+          showQuickJumper
+          hideOnSinglePage={true}
         />
-        {<Changes info={info} upDateIsShow={this.upDateIsShow} />}
+        {/* 修改弹窗 */}
+        <Changes info={info} upDateIsShow={this.upDateIsShow} />
       </div>
     );
   }
@@ -156,27 +171,26 @@ class Excel extends Component {
       }
     });
   }
-  //时间选择器
+  // 时间选择器
   setPicker = (e, date) => {
     this.setState((state) => ({
       params: { ...state.params, startTime: date[0], endTime: date[1] },
     }));
   }
-  //标题
+  // 标题
   getTitle(e){
     let title = e.target.value
-    console.log(title)
     this.setState(state=>({params:{...state.params,title}}))
   }
-  //搜索
+  // 搜索
   searchFun = () => {
     this.getList();
   };
-  //修改
+  // 修改
   changeRow(row) {
     this.setState({ info: { ...row, isShow: true } });
   }
-  //关闭弹框
+  // 关闭弹框
   upDateIsShow = (val)=> {
     // 取消/确认
     if(val){
@@ -187,18 +201,45 @@ class Excel extends Component {
       }
     }
   }
-  //分页
-  onPagination = (pageNum, pageSize) => {
+  /**
+   * 分页拆分成两个函数
+   * 第几页 
+   * 每页几条
+   */
+  // 第几页
+  changePage = (pageNum,pageSize)=>{
     this.setState(state=>({
       params:{
         ...state.params,
-        pageNum,pageSize
+        pageNum
       }
     }),()=>{
       this.getList()
     })
   }
-  //导出
+  // 每页几条
+  changePageSize = (pageNum,pageSize)=>{
+    this.setState(state=>({
+      params:{
+        ...state.params,
+        pageSize
+      }
+    }),()=>{
+      this.getList()
+    })
+  }
+  handleTableChange = (pagination)=>{
+    const {current,pageSize} = pagination
+    this.setState(state=>({
+      params:{
+        ...state.params,
+        pageNum:current,pageSize
+      }
+    }),()=>{
+      this.getList()
+    })
+  }
+  // 导出
   downloadFun = ()=> {
     const {list} = this.state
     if(list && !list.length){
